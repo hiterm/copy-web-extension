@@ -1,7 +1,7 @@
 import { build } from 'esbuild';
 
 build({
-  entryPoints: ['src/index.tsx'],
+  entryPoints: ['popup/popup.tsx'],
   bundle: true,
-  outdir: 'dist',
+  outdir: 'dist/popup',
 });
