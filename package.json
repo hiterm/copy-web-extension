@@ -1,5 +1,8 @@
 {
   "name": "copy-web-extensions",
   "version": "0.1.0",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "esbuild": "^0.14.6"
+  }
 }
