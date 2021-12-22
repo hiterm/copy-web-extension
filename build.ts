@@ -2,7 +2,7 @@ import { build } from 'esbuild';
 import { promises as fs } from 'fs';
 
 build({
-  entryPoints: ['popup/popup.tsx'],
+  entryPoints: ['popup/index.tsx'],
   bundle: true,
   outdir: 'dist/popup',
 });

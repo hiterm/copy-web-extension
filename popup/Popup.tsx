@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import browser from 'webextension-polyfill';
 
 const copyMarkdownLink = async () => {
@@ -9,6 +8,4 @@ const copyMarkdownLink = async () => {
   navigator.clipboard.writeText(markdownLink);
 };
 
-const App: React.VFC = () => (<button onClick={copyMarkdownLink}>Copy markdown link</button>);
-
-ReactDOM.render(<App />, document.getElementById('root'));
+export const Popup: React.VFC = () => (<button onClick={copyMarkdownLink}>Copy markdown link</button>);
