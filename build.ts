@@ -4,6 +4,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 const watchFlag = process.argv.includes('--watch');
+const devFlag = process.argv.includes('--dev');
 
 const watchOption: BuildOptions["watch"] = watchFlag ? {
   onRebuild: (error, result) => {
@@ -20,7 +21,8 @@ const watchOption: BuildOptions["watch"] = watchFlag ? {
     entryPoints: ['popup/index.tsx'],
     bundle: true,
     outdir: 'dist/popup',
-    watch: watchOption
+    watch: watchOption,
+    sourcemap: devFlag ? 'inline' : false
   });
 
   if (watchFlag) {
