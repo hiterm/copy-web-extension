@@ -7,7 +7,7 @@ const watchFlag = process.argv.includes('--watch');
 
 (async () => {
   await fs.mkdir('dist/popup', { recursive: true });
-  await fs.mkdir('dist/icons');
+  await fs.mkdir('dist/icons', { recursive: true });
 
   build({
     entryPoints: ['popup/index.tsx'],
