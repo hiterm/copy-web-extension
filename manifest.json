@@ -15,10 +15,5 @@
     },
     "default_title": "Copy",
     "default_popup": "popup/popup.html"
-  },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "5519dc201048403a8@baebf99c348bff8"
-    }
   }
 }
