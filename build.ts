@@ -1,9 +1,16 @@
 import * as chokidar from 'chokidar';
-import { build } from 'esbuild';
+import { build, BuildOptions } from 'esbuild';
 import { promises as fs } from 'fs';
 import path from 'path';
 
 const watchFlag = process.argv.includes('--watch');
+
+const watchOption: BuildOptions["watch"] = watchFlag ? {
+  onRebuild: (error, result) => {
+    if (error) console.error('watch build failed:', error)
+    else console.log('watch build succeeded:', result)
+  }
+} : false;
 
 (async () => {
   await fs.mkdir('dist/popup', { recursive: true });
@@ -13,6 +20,7 @@ const watchFlag = process.argv.includes('--watch');
     entryPoints: ['popup/index.tsx'],
     bundle: true,
     outdir: 'dist/popup',
+    watch: watchOption
   });
 
   if (watchFlag) {
