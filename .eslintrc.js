@@ -11,7 +11,7 @@ module.exports = {
     'prettier',
   ],
   rules: {
-    'import/no-unresolved': 0
+    'import/no-unresolved': 0,
   },
   env: {
     node: true,
