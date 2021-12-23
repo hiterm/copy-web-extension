@@ -6,12 +6,14 @@ import path from 'path';
 const watchFlag = process.argv.includes('--watch');
 const devFlag = process.argv.includes('--dev');
 
-const watchOption: BuildOptions["watch"] = watchFlag ? {
-  onRebuild: (error, result) => {
-    if (error) console.error('watch build failed:', error)
-    else console.log('watch build succeeded:', result)
-  }
-} : false;
+const watchOption: BuildOptions['watch'] = watchFlag
+  ? {
+      onRebuild: (error, result) => {
+        if (error) console.error('watch build failed:', error);
+        else console.log('watch build succeeded:', result);
+      },
+    }
+  : false;
 
 (async () => {
   await fs.mkdir('dist/popup', { recursive: true });
@@ -22,7 +24,7 @@ const watchOption: BuildOptions["watch"] = watchFlag ? {
     bundle: true,
     outdir: 'dist/popup',
     watch: watchOption,
-    sourcemap: devFlag ? 'inline' : false
+    sourcemap: devFlag ? 'inline' : false,
   });
 
   if (watchFlag) {

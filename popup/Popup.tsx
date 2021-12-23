@@ -8,4 +8,6 @@ const copyMarkdownLink = async () => {
   navigator.clipboard.writeText(markdownLink);
 };
 
-export const Popup: React.VFC = () => (<button onClick={copyMarkdownLink}>Copy markdown link</button>);
+export const Popup: React.VFC = () => (
+  <button onClick={copyMarkdownLink}>Copy markdown link</button>
+);
