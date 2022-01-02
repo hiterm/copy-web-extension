@@ -1,6 +1,7 @@
 import React from 'react';
 import browser from 'webextension-polyfill';
 import { Box, Button, Stack } from '@chakra-ui/react';
+import { CopyHtmlLinkButton } from './CopyHtmlLinkButton';
 
 const copyMarkdownUrl = async () => {
   const tabs = await browser.tabs.query({ currentWindow: true, active: true });
@@ -25,6 +26,7 @@ export const CopyButtons: React.VFC = () => (
       <Button colorScheme="teal" onClick={copyJiraUrl}>
         Copy Jira link
       </Button>
+      <CopyHtmlLinkButton />
     </Stack>
   </Box>
 );
