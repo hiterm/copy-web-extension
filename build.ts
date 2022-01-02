@@ -8,69 +8,93 @@ const devFlag = process.argv.includes('--dev');
 const chromeFlag = process.argv.includes('--chrome');
 const firefoxFlag = process.argv.includes('--firefox');
 
-if (chromeFlag && firefoxFlag) {
-  throw new Error('--chrome and --firefox cannot be used at the same time.');
-}
-
 type Browser = 'firefox' | 'chrome';
-const targetBrowser: Browser = firefoxFlag
-  ? 'firefox'
-  : chromeFlag
-    ? 'chrome'
-    : 'firefox';
 
-const watchOption: BuildOptions['watch'] = watchFlag
-  ? {
-    onRebuild: (error, result) => {
-      if (error) console.error('watch build failed:', error);
-      else console.log('watch build succeeded:', result);
-    },
+const watchOption = (targetBrowser: Browser): BuildOptions['watch'] =>
+  watchFlag
+    ? {
+        onRebuild: (error, result) => {
+          if (error)
+            console.error(`watch build failed for ${targetBrowser}: `, error);
+          else
+            console.log(`watch build succeeded for ${targetBrowser}:`, result);
+        },
+      }
+    : false;
+
+const distDir = (targetBrowser: Browser) => {
+  switch (targetBrowser) {
+    case 'firefox':
+      return 'dist-firefox';
+    case 'chrome':
+      return 'dist-chrome';
   }
-  : false;
+};
 
-const makeManifestFile = async () => {
+const distPath = (relPath: string, targetBrowser: Browser) =>
+  path.join(distDir(targetBrowser), relPath);
+
+const makeManifestFile = async (targetBrowser: Browser) => {
   const baseManifestJson = JSON.parse(
     await fs.readFile('manifest.json', 'utf8')
   );
   if (targetBrowser === 'firefox') {
     const firefoxJson = JSON.parse(await fs.readFile('firefox.json', 'utf8'));
     const manifestJson = { ...baseManifestJson, ...firefoxJson };
-    fs.writeFile('dist/manifest.json', JSON.stringify(manifestJson, null, 1));
+    fs.writeFile(
+      distPath('manifest.json', targetBrowser),
+      JSON.stringify(manifestJson, null, 1)
+    );
   } else {
-    fs.copyFile('manifest.json', 'dist/manifest.json');
+    fs.copyFile('manifest.json', distPath('manifest.json', targetBrowser));
   }
 };
 
-makeManifestFile();
+const buildExtension = async (targetBrowser: Browser) => {
+  await fs.mkdir(distPath('popup', targetBrowser), { recursive: true });
+  await fs.mkdir(distPath('icons', targetBrowser), { recursive: true });
 
-(async () => {
-  await fs.mkdir('dist/popup', { recursive: true });
-  await fs.mkdir('dist/icons', { recursive: true });
-
+  // build tsx by esbuild
   build({
     entryPoints: ['popup/index.tsx'],
     bundle: true,
-    outdir: 'dist/popup',
-    watch: watchOption,
+    outdir: distPath('popup', targetBrowser),
+    watch: watchOption(targetBrowser),
     sourcemap: devFlag ? 'inline' : false,
   });
 
+  // copy static files
   if (watchFlag) {
     chokidar.watch('popup/popup.html').on('all', (event, path) => {
       console.log(event, path);
-      fs.copyFile(path, 'dist/popup/popup.html');
+      fs.copyFile(path, distPath('popup/popup.html', targetBrowser));
     });
-    chokidar.watch(['manifest.json', 'firefox.json']).on('all', (event, path) => {
-      console.log(event, path);
-      makeManifestFile();
-    });
+    chokidar
+      .watch(['manifest.json', 'firefox.json'])
+      .on('all', (event, path) => {
+        console.log(event, path);
+        makeManifestFile(targetBrowser);
+      });
     chokidar.watch('icons/*').on('all', (event, filepath) => {
       console.log(event, filepath);
-      fs.copyFile(filepath, path.join('dist', path.basename(filepath)));
+      fs.copyFile(
+        filepath,
+        distPath(path.join('icons', path.basename(filepath)), targetBrowser)
+      );
     });
   } else {
-    fs.copyFile('popup/popup.html', 'dist/popup/popup.html');
-    makeManifestFile();
-    fs.cp('icons', 'dist/icons', { recursive: true });
+    fs.copyFile(
+      'popup/popup.html',
+      distPath('popup/popup.html', targetBrowser)
+    );
+    makeManifestFile(targetBrowser);
+    fs.cp('icons', distPath('icons', targetBrowser), { recursive: true });
   }
-})();
+};
+
+if (firefoxFlag) {
+  buildExtension('firefox');
+}
+if (chromeFlag) {
+  buildExtension('chrome');
+}
