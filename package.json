@@ -2,7 +2,7 @@
   "name": "copy-web-extensions",
   "version": "0.1.1",
   "private": true,
-    "scripts": {
+  "scripts": {
     "build": "ts-node -T build.ts --firefox --chrome",
     "build:firefox": "ts-node -T build.ts --firefox",
     "build:chrome": "ts-node -T build.ts --chrome",

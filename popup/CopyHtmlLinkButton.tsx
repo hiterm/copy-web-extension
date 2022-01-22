@@ -33,7 +33,11 @@ export const CopyHtmlLinkButton: React.VFC = () => {
       <ButtonWithPopover onClick={handleClick}>
         Copy HTML link
       </ButtonWithPopover>
-      <Link href="https://google.com" ref={aRef} sx={{position: 'absolute', top: '-100px'}}>
+      <Link
+        href="https://google.com"
+        ref={aRef}
+        sx={{ position: 'absolute', top: '-100px' }}
+      >
         link
       </Link>
     </>

@@ -1,1 +1,1 @@
- A browser extension to copy url, etc.
+A browser extension to copy url, etc.

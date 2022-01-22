@@ -1,9 +1,6 @@
 import React from 'react';
 import browser from 'webextension-polyfill';
-import {
-  Box,
-  Stack,
-} from '@chakra-ui/react';
+import { Box, Stack } from '@chakra-ui/react';
 import { CopyHtmlLinkButton } from './CopyHtmlLinkButton';
 import { ButtonWithPopover } from './ButtonWithPopover';
 
