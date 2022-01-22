@@ -11,7 +11,8 @@ module.exports = {
     'prettier',
   ],
   rules: {
-    'import/no-unresolved': 0,
+    'react/prop-types': 'off',
+    'import/no-unresolved': 'off',
   },
   env: {
     node: true,

@@ -1,6 +1,7 @@
-import { Button, Link } from '@chakra-ui/react';
+import { Link } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 import browser from 'webextension-polyfill';
+import { ButtonWithPopover } from './ButtonWithPopover';
 
 export const CopyHtmlLinkButton: React.VFC = () => {
   const aRef = useRef<HTMLAnchorElement>(null!);
@@ -29,9 +30,9 @@ export const CopyHtmlLinkButton: React.VFC = () => {
 
   return (
     <>
-      <Button colorScheme="teal" onClick={handleClick}>
+      <ButtonWithPopover onClick={handleClick}>
         Copy HTML link
-      </Button>
+      </ButtonWithPopover>
       <Link href="https://google.com" ref={aRef} sx={{position: 'absolute', top: '-100px'}}>
         link
       </Link>
