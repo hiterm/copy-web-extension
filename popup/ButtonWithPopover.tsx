@@ -3,7 +3,6 @@ import {
   Button,
   Popover,
   PopoverArrow,
-  PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
@@ -38,9 +37,8 @@ export const ButtonWithPopover: React.VFC<ButtonWithPopoverProps> = ({
           {children}
         </Button>
       </PopoverTrigger>
-      <PopoverContent sx={{ width: 100 }}>
+      <PopoverContent sx={{ width: 90, textAlign: 'center' }}>
         <PopoverArrow />
-        <PopoverCloseButton />
         <PopoverHeader>Copied!</PopoverHeader>
       </PopoverContent>
     </Popover>
