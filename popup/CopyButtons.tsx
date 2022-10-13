@@ -1,9 +1,8 @@
 import React from 'react';
 import browser from 'webextension-polyfill';
-import { Box, Stack } from '@chakra-ui/react';
 import { CopyHtmlLinkButton } from './CopyHtmlLinkButton';
 import { ButtonWithPopover } from './ButtonWithPopover';
-import { Button } from '@mantine/core';
+import { Box, Button, Stack } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 
 const getMarkdownUrl = async (): Promise<string> => {
@@ -24,8 +23,8 @@ export const CopyButtons: React.VFC = () => {
   const clipboard = useClipboard({ timeout: 1000 });
 
   return (
-    <Box sx={{ margin: 1 }}>
-      <Stack direction="column">
+    <Box sx={{ margin: 5 }}>
+      <Stack spacing={5}>
         <Button
           color={clipboard.copied ? 'teal' : 'blue'}
           onClick={async () => clipboard.copy(await getMarkdownUrl())}
